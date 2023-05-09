@@ -1,2 +1,0 @@
-// Delete a document
-db.remove({"name": "Holberton school"})
