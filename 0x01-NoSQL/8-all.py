@@ -1,5 +1,7 @@
 #!/usr/bin/env python3
-"""Display all collections in a database."""
+"""Display all the documents in a collection."""
 
-if __name__ == '__main__':
-    pass
+
+def list_all(mongo_collection):
+    """List all the documents in a collection."""
+    return list(mongo_collection.find())
