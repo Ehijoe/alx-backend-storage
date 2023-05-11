@@ -38,10 +38,10 @@ class Cache:
 
     @count_calls
     @call_history
-    def store(self, value: Any) -> str:
+    def store(self, data: Any) -> str:
         """Store a value in redis with a random key."""
         key = str(uuid4())
-        self._redis.set(key, value)
+        self._redis.set(key, data)
         return key
 
     def get(self, key: str, fn: Union[Callable, None] = None)\
@@ -68,7 +68,7 @@ def replay(func: Callable) -> None:
     count = cache.get(name)
     if count is None:
         count = b'0'
-    print("{} was called {} times".format(
+    print("{} was called {} times:".format(
         name,
         count.decode("utf-8")
     ))
