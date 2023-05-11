@@ -65,9 +65,12 @@ def replay(func: Callable) -> None:
     """Print the replay of a function."""
     name = func.__qualname__
     cache = redis.Redis()
+    count = cache.get(name)
+    if count is None:
+        count = b'0'
     print("{} was called {} times".format(
         name,
-        int(cache.get(name))
+        count.decode("utf-8")
     ))
     for inp, outp in zip(
             cache.lrange(name + ":inputs", 0, -1),
