@@ -6,7 +6,7 @@ from typing import Any, Callable, Union
 from functools import wraps
 
 
-def count_calls(method: Callable):
+def count_calls(method: Callable) -> Callable:
     """Decorate a function to count its calls."""
     @wraps(method)
     def new_method(self, *args, **kwargs):
@@ -16,7 +16,7 @@ def count_calls(method: Callable):
     return new_method
 
 
-def call_history(method: Callable):
+def call_history(method: Callable) -> Callable:
     """Decorate a function to keep its call history."""
     @wraps(method)
     def new_method(self, *args):
