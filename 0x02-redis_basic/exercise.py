@@ -2,7 +2,7 @@
 """A cache class."""
 import redis
 from uuid import uuid4
-from typing import Any, Callable
+from typing import Any, Callable, Union
 
 
 class Cache:
@@ -19,7 +19,8 @@ class Cache:
         self._redis.set(key, value)
         return key
 
-    def get(self, key: str, fn: Callable):
+    def get(self, key: str, fn: Union[Callable, None])\
+            -> Union[int, float, str, bytes, None]:
         """Get a value from the cache."""
         if fn is None:
             return self._redis.get(key)
@@ -27,8 +28,9 @@ class Cache:
 
     def get_int(self, key: str) -> int:
         """Get an integer from the cache."""
-        return self.get(key, int)
+        return int(self._redis.get(key))
 
     def get_str(self, key: str) -> str:
         """Get a string from the cache."""
-        return self.get(key, lambda s: s.decode('utf-8'))
+        data = self._redis.get(key)
+        return data.decode("utf-8")
