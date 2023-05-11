@@ -16,6 +16,18 @@ def count_calls(method: Callable):
     return new_method
 
 
+def call_history(method: Callable):
+    """Decorate a function to keep its call history."""
+    @wraps(method)
+    def new_method(self, *args):
+        """Do the same thing as previous method but also record history."""
+        self._redis.rpush(method.__qualname__ + ":inputs", str(args))
+        res = method(self, *args)
+        self._redis.rpush(method.__qualname__ + ":outputs", res)
+        return res
+    return new_method
+
+
 class Cache:
     """A class for storing key-value pairs."""
 
@@ -25,6 +37,7 @@ class Cache:
         self._redis.flushdb()
 
     @count_calls
+    @call_history
     def store(self, value: Any) -> str:
         """Store a value in redis with a random key."""
         key = str(uuid4())
