@@ -45,7 +45,7 @@ class Cache:
         return key
 
     def get(self, key: str, fn: Union[Callable, None] = None)\
-            -> Union[int, float, str, bytes, None]:
+            -> Union[int, float, str, bytes]:
         """Get a value from the cache."""
         if fn is None:
             return self._redis.get(key)
